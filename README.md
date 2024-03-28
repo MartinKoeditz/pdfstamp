@@ -17,7 +17,7 @@ repository:
 | -d N        | Optional | Target DPI. Defaults to 300. |
 | -e EXT      | Optional | Extension appended to the PDF filename. |
 | -i FILE     | Required | Image file containing image of the stamp. |
-| -l X,Y      | Required | Location on page to apply stamp. |
+| -l X,Y,W,H  | Required | Location on page to apply stamp. |
 | -o FILE     | Optional | Output directory. |
 | -p N        | Optional | Page numbers to stamp. -1 is the last page. May be provided multiple times. |
 | -pp N-N     | Optional | Range of page numbers to stamp, e.g. `5-10`. May be provided multiple times. |
@@ -34,15 +34,15 @@ to `my.pdf`:
 
 Add image to pages 1 to 4, 6 to 8 and page 10.
 
-    java -jar pdfstamp.jar -i /path/to/an/image.png -l 10,10 -pp 1-4 -pp 6-8 -p 10 my.pdf
+    java -jar pdfstamp.jar -i /path/to/an/image.png -l 10,10,20,20 -pp 1-4 -pp 6-8 -p 10 my.pdf
 
 
 The same as above, except for all PDF files within a given directory:
 
-    java -jar pdfstamp.jar -u http://www.crossref.org -i /path/to/an/image.png -l 10,10 -r /my/folder
+    java -jar pdfstamp.jar -u http://www.crossref.org -i /path/to/an/image.png -l 10,10,30,30 -r /my/folder
 
 Scale the image by altering DPI and only apply it to the second page:
 
-    java -jar pdfstamp.jar -u http://www.crossref.org -i /path/to/an/image.png -l 10,10 -d 600 my.pdf
+    java -jar pdfstamp.jar -u http://www.crossref.org -i /path/to/an/image.png -l 10,10,30,30 -d 600 my.pdf
 
 
