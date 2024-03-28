@@ -40,7 +40,7 @@ public class Main {
     private List<String> pageRanges = new ArrayList<String>();
 
     @Option(name="-l", usage="Required. Location on page to apply stamp.",
-            required=true, multiValued=false, metaVar="X,Y")
+            required=true, multiValued=false, metaVar="X,Y,W,H")
     private StampTuple stampLocation = new StampTuple();
     
     @Option(name="-e", usage="Optional. Extension appended to the PDF filename.",
@@ -135,7 +135,7 @@ public class Main {
      * the specified page number, 'page', along with a URL action for 'url',
      * at the same location. The action area covers the the image.
      */
-    private void stampPdf(PdfStamper s, Image i, float x, float y, int page) 
+    private void stampPdf(PdfStamper s, Image i, float x, float y, float w, float h, int page) 
             throws DocumentException {
         /* Assume 72 DPI images if not specified. */
         final float scaleFactorX = (i.getDpiX() == 0 ? 72f : i.getDpiX()) / targetDpi;
@@ -148,12 +148,12 @@ public class Main {
             throw new DocumentException("PDF does not have a page " + page + ".");
         } else {
             content.saveState();
-            content.addImage(i, scaledImgWidth, 0.0f, 0.0f, scaledImgHeight, x, y);
+            content.addImage(i, w, 0.0f, 0.0f, h, x, y);
             if (!url.equals("")) {
                 content.setAction(new PdfAction(url), 
                                   x,
-                                  y + scaledImgHeight,
-                                  x + scaledImgWidth,
+                                  y + h,
+                                  x + w,
                                   y);
             }
             content.restoreState();
@@ -195,7 +195,7 @@ public class Main {
                 if (page < 0) {
                     page = r.getNumberOfPages() + 1 + page;
                 }
-                stampPdf(s, stampImage, stampLocation.x, stampLocation.y, page);
+                stampPdf(s, stampImage, stampLocation.x, stampLocation.y, stampLocation.w, stampLocation.h, page);
             }
         } catch (Exception e) {
             System.err.println("Failed on " + in.getPath() + " because of:");
@@ -225,7 +225,6 @@ public class Main {
         String[] parts = in.getName().split("\\.");
         StringBuffer outName = new StringBuffer();
         outName.append(parts[0]);
-        outName.append('_');
         outName.append(outputExtension);
         for (int i=1; i<parts.length; i++) {
             outName.append('.');

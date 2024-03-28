@@ -29,9 +29,9 @@ public class StampTupleOptionHandler extends OptionHandler<StampTuple> {
         final String paramValue = params.getParameter(0);
         final String[] components = paramValue.split(",");
         
-        if (components.length != 2) {
+        if (components.length != 4) {
             /* Each StampTuple should have x,y . */
-            throw new CmdLineException("Must specify X,Y for location.");
+            throw new CmdLineException("Must specify X,Y,W,H for location.");
         }
         
         StampTuple st = new StampTuple();
@@ -39,6 +39,8 @@ public class StampTupleOptionHandler extends OptionHandler<StampTuple> {
         try {
             st.x = Float.parseFloat(components[0]);
             st.y = Float.parseFloat(components[1]);
+            st.w = Float.parseFloat(components[2]);
+            st.h = Float.parseFloat(components[3]);
         } catch (NumberFormatException e) {
             throw new CmdLineException("X and Y must be specified as rational numbers.");
         }
